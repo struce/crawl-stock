@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/henson/proxypool/pkg/models"
+	"github.com/lwl1989/crawl-stock/models"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/parnurzeal/gorequest"
 )
