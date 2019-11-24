@@ -2,7 +2,6 @@
 package models
 
 import (
-"fmt"
     "sync"
 )
 
@@ -47,6 +46,14 @@ func deleteIP(ip *IP) error {
     return nil
 }
 
+func UpdateIp(ip *IP) error  {
+    return nil
+}
+
+func InsertIp(ip *IP) error  {
+    IpMap.LoadOrStore(ip.Data, ip)
+    return nil
+}
 // DeleteIP .
 func DeleteIP(ip *IP) error {
     return deleteIP(ip)
