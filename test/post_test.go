@@ -1,6 +1,7 @@
 package test
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 )
@@ -26,4 +27,19 @@ func TestPost(t *testing.T) {
 	}
 
 	fmt.Println(string(response))
+	ret := models.NewResponseBody()
+	err = json.Unmarshal(response, ret)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(ret)
+	if ret.DESCRIPTION != "" {
+		fmt.Println(ret.DESCRIPTION)
+		fmt.Println(ret.DESCRIPTION[4])
+		if ret.DESCRIPTION[4] == 'E' {
+			fmt.Println("OK")
+		}
+	}
 }

@@ -19,7 +19,14 @@ type RequestBody struct {
 	UID          string `json:"uid"`
 }
 
-type Response struct {
+type ResponseBody struct {
+	DESCRIPTION string `json:"description"`
+	PHOTO       string `json:"photo"`
+	TIME        string `json:"time"`
+}
+
+type HttpHeader struct {
+	HEADERS map[string]string
 }
 
 func NewRequestBody(phone string) *RequestBody {
@@ -38,5 +45,22 @@ func NewRequestBody(phone string) *RequestBody {
 		RSN:          "00000000000000",
 		TYPE:         "MOB",
 		UID:          url.QueryEscape(phone),
+	}
+}
+
+func NewResponseBody() *ResponseBody {
+	return &ResponseBody{}
+}
+
+func NewHttpHeader() *HttpHeader {
+	headers := make(map[string]string)
+
+	headers["User-Agent"] = "Mozilla/5.0 (Linux; Android 4.4.4; SM-G9350 Build/KTU84P) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/33.0.0.0 Mobile Safari/537.36"
+	headers["Host"] = "405mtf.mitake.com.tw:8516"
+	headers["Connection"] = "close"
+	headers["Accept-Encoding"] = "gzip, deflate"
+	headers["Content-Type"] = "application/x-www-form-urlencoded"
+	return &HttpHeader{
+		HEADERS: headers,
 	}
 }

@@ -8,7 +8,6 @@ import (
 )
 import "encoding/json"
 import "crawl/models"
-//import urllib "net/url"
 
 func Post(url string, data *models.RequestBody, headers map[string]string) (content []byte, err error) {
 	if url == "" {
@@ -54,5 +53,40 @@ func Post(url string, data *models.RequestBody, headers map[string]string) (cont
 	if content, err = ioutil.ReadAll(response.Body); err != nil {
 		return
 	}
+	return
+}
+
+func registered(rep *models.ResponseBody) (registered bool) {
+	if rep.DESCRIPTION != "" {
+		return true
+	}
+
+	if rep.PHOTO != "" {
+		return true
+	}
+
+	if rep.TIME[4] == '/' {
+		return true
+	}
+
+	return false
+}
+
+
+func IsRegisterPhone(url, phone string) (reged bool, err error) {
+	httpHeaders := models.NewHttpHeader().HEADERS
+	requestbody := models.NewRequestBody(phone)
+	response, err := Post(url, requestbody, httpHeaders)
+	if err != nil {
+		return
+	}
+
+	respBody := models.NewResponseBody()
+	err = json.Unmarshal(response, respBody)
+	if err != nil {
+		return
+	}
+
+	reged = registered(respBody)
 	return
 }
