@@ -59,7 +59,7 @@ func Run() {
     mux.HandleFunc("/ip", ProxyHandler)
     mux.HandleFunc("/count", CountHandler)
     log.Println("Starting server", AppAddr+":"+AppPort)
-    http.ListenAndServe(AppAddr+":"+AppPort, mux)
+    _ = http.ListenAndServe(AppAddr+":"+AppPort, mux)
 }
 
 // ProxyHandler .

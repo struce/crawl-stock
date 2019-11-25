@@ -1,0 +1,58 @@
+package spider
+
+import (
+	"bytes"
+	"errors"
+	"io/ioutil"
+	"net/http"
+)
+import "encoding/json"
+import "crawl/models"
+//import urllib "net/url"
+
+func Post(url string, data *models.RequestBody, headers map[string]string) (content []byte, err error) {
+	if url == "" {
+		return nil, errors.New("url is null")
+	}
+
+	if data == nil {
+		return nil, errors.New("data is null")
+	}
+
+	requestBody, err := json.Marshal(data)
+	if err != nil {
+		return
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", url, bytes.NewReader(requestBody))
+	if err != nil {
+		return
+	}
+
+	for k, v := range headers{
+		req.Header.Set(k, v)
+	}
+
+	if req.Header.Get("Content-Type") == "" {
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	}
+
+	if req.Header.Get("Content-Length") != "" {
+		req.Header.Del("Content-Length")
+	}
+
+	req.Header.Set("Content-Length", string(len(string(requestBody))))
+
+	response, err := client.Do(req)
+	if err != nil {
+		return
+	}
+
+	defer response.Body.Close()
+
+	if content, err = ioutil.ReadAll(response.Body); err != nil {
+		return
+	}
+	return
+}
